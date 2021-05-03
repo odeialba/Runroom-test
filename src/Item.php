@@ -5,13 +5,13 @@ namespace Runroom\GildedRose;
 class Item
 {
     private string $name;
-    public int $sell_in;
+    private int $sellIn;
     private int $quality;
 
     public function __construct(string $name, int $sellIn, int $quality)
     {
         $this->name = $name;
-        $this->sell_in = $sellIn;
+        $this->sellIn = $sellIn;
         $this->quality = $quality;
     }
 
@@ -29,14 +29,19 @@ class Item
 
     public function getSellIn(): int
     {
-        return $this->sell_in;
+        return $this->sellIn;
     }
 
     public function setSellIn(int $sellIn): self
     {
-        $this->sell_in = $sellIn;
+        $this->sellIn = $sellIn;
 
         return $this;
+    }
+
+    public function decreaseSellIn(): void
+    {
+        --$this->sellIn;
     }
 
     public function getQuality(): int
@@ -82,6 +87,6 @@ class Item
 
     public function __toString(): string
     {
-        return "{$this->name}, {$this->sell_in}, {$this->quality}";
+        return "{$this->name}, {$this->sellIn}, {$this->quality}";
     }
 }

@@ -38,8 +38,9 @@ class GildedRose
     private function updateBrie(Item $item): void
     {
         $item->checkAndIncreaseQuality();
+        $item->decreaseSellIn();
 
-        if (--$item->sell_in < 0) {
+        if ($item->getSellIn() < 0) {
             $item->checkAndIncreaseQuality();
         }
     }
@@ -49,15 +50,18 @@ class GildedRose
         $item->checkAndIncreaseQuality();
 
         if ($item->getQuality() < 50) {
-            if ($item->sell_in < 11) {
+            if ($item->getSellIn() < 11) {
                 $item->increaseQuality();
             }
-            if ($item->sell_in < 6) {
+
+            if ($item->getSellIn() < 6) {
                 $item->increaseQuality();
             }
         }
 
-        if (--$item->sell_in < 0) {
+        $item->decreaseSellIn();
+
+        if ($item->getSellIn() < 0) {
             $item->resetQuality();
         }
     }
@@ -65,8 +69,9 @@ class GildedRose
     private function updateCommon(Item $item): void
     {
         $item->checkAndDecreaseQuality();
+        $item->decreaseSellIn();
 
-        if (--$item->sell_in < 0) {
+        if ($item->getSellIn() < 0) {
             $item->checkAndDecreaseQuality();
         }
     }

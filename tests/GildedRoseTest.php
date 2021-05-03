@@ -83,7 +83,7 @@ class GildedRoseTest extends TestCase
         $gilded_rose = new GildedRose($items);
         $gilded_rose->updateQuality();
 
-  		$this->assertEquals(10, $items[0]->sell_in);
+  		$this->assertEquals(10, $items[0]->getSellIn());
   		$this->assertEquals(10, $items[0]->getQuality());
   	}
 
