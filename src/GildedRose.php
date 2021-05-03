@@ -37,51 +37,37 @@ class GildedRose
 
     private function updateBrie(Item $item): void
     {
-        if ($item->quality < 50) {
-            $item->quality++;
-        }
+        $item->checkAndIncreaseQuality();
 
-        if (--$item->sell_in >= 0) {
-            return;
-        }
-
-        if ($item->quality < 50) {
-            $item->quality++;
+        if (--$item->sell_in < 0) {
+            $item->checkAndIncreaseQuality();
         }
     }
 
     private function updateBackstage(Item $item): void
     {
-        if ($item->quality < 50) {
-            if (++$item->quality < 50) {
-                if ($item->sell_in < 11) {
-                    $item->quality++;
-                }
-                if ($item->sell_in < 6) {
-                    $item->quality++;
-                }
+        $item->checkAndIncreaseQuality();
+
+        if ($item->getQuality() < 50) {
+            if ($item->sell_in < 11) {
+                $item->increaseQuality();
+            }
+            if ($item->sell_in < 6) {
+                $item->increaseQuality();
             }
         }
 
-        if (--$item->sell_in >= 0) {
-            return;
+        if (--$item->sell_in < 0) {
+            $item->resetQuality();
         }
-
-        $item->quality = 0;
     }
 
     private function updateCommon(Item $item): void
     {
-        if ($item->quality > 0) {
-            $item->quality--;
-        }
+        $item->checkAndDecreaseQuality();
 
-        if (--$item->sell_in >= 0) {
-            return;
-        }
-
-        if ($item->quality > 0) {
-            $item->quality--;
+        if (--$item->sell_in < 0) {
+            $item->checkAndDecreaseQuality();
         }
     }
 }

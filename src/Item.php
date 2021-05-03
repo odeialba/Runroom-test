@@ -6,7 +6,7 @@ class Item
 {
     private string $name;
     public int $sell_in;
-    public int $quality;
+    private int $quality;
 
     public function __construct(string $name, int $sellIn, int $quality)
     {
@@ -49,6 +49,35 @@ class Item
         $this->quality = $quality;
 
         return $this;
+    }
+
+    public function decreaseQuality(): void
+    {
+        --$this->quality;
+    }
+
+    public function increaseQuality(): void
+    {
+        ++$this->quality;
+    }
+
+    public function resetQuality(): void
+    {
+        $this->quality = 0;
+    }
+
+    public function checkAndIncreaseQuality(): void
+    {
+        if ($this->getQuality() < 50) {
+            $this->increaseQuality();
+        }
+    }
+
+    public function checkAndDecreaseQuality(): void
+    {
+        if ($this->getQuality() > 0) {
+            $this->decreaseQuality();
+        }
     }
 
     public function __toString(): string

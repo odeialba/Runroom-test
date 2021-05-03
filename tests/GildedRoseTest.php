@@ -18,7 +18,7 @@ class GildedRoseTest extends TestCase
   		$gilded_rose = new GildedRose($items);
         $gilded_rose->updateQuality();
 
-        $this->assertEquals(4, $items[0]->quality);
+        $this->assertEquals(4, $items[0]->getQuality());
   	}
 
     /**
@@ -31,7 +31,7 @@ class GildedRoseTest extends TestCase
   		$gilded_rose = new GildedRose($items);
         $gilded_rose->updateQuality();
 
-  		$this->assertEquals(3, $items[0]->quality);
+  		$this->assertEquals(3, $items[0]->getQuality());
   	}
 
     /**
@@ -44,7 +44,7 @@ class GildedRoseTest extends TestCase
   		$gilded_rose = new GildedRose($items);
         $gilded_rose->updateQuality();
 
-  		$this->assertEquals(0, $items[0]->quality);
+  		$this->assertEquals(0, $items[0]->getQuality());
   	}
 
     /**
@@ -57,7 +57,7 @@ class GildedRoseTest extends TestCase
         $gilded_rose = new GildedRose($items);
         $gilded_rose->updateQuality();
 
-  		$this->assertEquals(7, $items[0]->quality);
+  		$this->assertEquals(7, $items[0]->getQuality());
   	}
 
     /**
@@ -70,7 +70,7 @@ class GildedRoseTest extends TestCase
         $gilded_rose = new GildedRose($items);
         $gilded_rose->updateQuality();
 
-  		$this->assertEquals(50, $items[0]->quality);
+  		$this->assertEquals(50, $items[0]->getQuality());
   	}
 
     /**
@@ -84,7 +84,7 @@ class GildedRoseTest extends TestCase
         $gilded_rose->updateQuality();
 
   		$this->assertEquals(10, $items[0]->sell_in);
-  		$this->assertEquals(10, $items[0]->quality);
+  		$this->assertEquals(10, $items[0]->getQuality());
   	}
 
     public static function backstageRules(): array
@@ -97,6 +97,7 @@ class GildedRoseTest extends TestCase
   			'incr. 3 if 0 < sellIn <= 5 (min)' => [1, 10, 13],
   			'puts to 0 if sellIn <= 0 (max)' => [0, 10, 0],
   			'puts to 0 if sellIn <= 0 (...)' => [-1, 10, 0],
+  			'quantity increase before anything' => [5, 49, 50],
   		];
   	}
 
@@ -111,6 +112,6 @@ class GildedRoseTest extends TestCase
         $gilded_rose = new GildedRose($items);
         $gilded_rose->updateQuality();
 
-  		$this->assertEquals($expected, $items[0]->quality);
+  		$this->assertEquals($expected, $items[0]->getQuality());
   	}
 }
