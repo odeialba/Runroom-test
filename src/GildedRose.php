@@ -8,6 +8,7 @@ class GildedRose
     private CONST NAME_BACKSTAGE = 'Backstage passes to a TAFKAL80ETC concert';
     private CONST NAME_SULFURAS = 'Sulfuras, Hand of Ragnaros';
 
+    /** @var Item[] $items */
     private array $items;
 
     public function __construct(array $items)
@@ -18,7 +19,7 @@ class GildedRose
     public function updateQuality(): void
     {
         foreach ($this->items as $item) {
-            switch ($item->name) {
+            switch ($item->getName()) {
                 case self::NAME_BRIE:
                     $this->updateBrie($item);
                     break;
@@ -26,7 +27,6 @@ class GildedRose
                     $this->updateBackstage($item);
                     break;
                 case self::NAME_SULFURAS:
-                    $this->updateSulfuras($item);
                     break;
                 default:
                     $this->updateCommon($item);
@@ -68,10 +68,6 @@ class GildedRose
         }
 
         $item->quality = 0;
-    }
-
-    private function updateSulfuras(Item $item): void
-    {
     }
 
     private function updateCommon(Item $item): void
