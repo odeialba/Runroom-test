@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Runroom\GildedRose;
 
@@ -11,6 +11,10 @@ class GildedRose
     /** @var Item[] $items */
     private array $items;
 
+    /**
+     * GildedRose constructor.
+     * @param Item[] $items
+     */
     public function __construct(array $items)
     {
         $this->items = $items;
