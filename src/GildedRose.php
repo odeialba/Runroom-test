@@ -37,17 +37,17 @@ class GildedRose
 
     private function updateBrie(Item $item): void
     {
-        $item->checkAndIncreaseQuality();
+        $this->checkAndIncreaseQuality($item);
         $item->decreaseSellIn();
 
         if ($item->getSellIn() < 0) {
-            $item->checkAndIncreaseQuality();
+            $this->checkAndIncreaseQuality($item);
         }
     }
 
     private function updateBackstage(Item $item): void
     {
-        $item->checkAndIncreaseQuality();
+        $this->checkAndIncreaseQuality($item);
 
         if ($item->getQuality() < 50) {
             if ($item->getSellIn() < 11) {
@@ -68,11 +68,25 @@ class GildedRose
 
     private function updateCommon(Item $item): void
     {
-        $item->checkAndDecreaseQuality();
+        $this->checkAndDecreaseQuality($item);
         $item->decreaseSellIn();
 
         if ($item->getSellIn() < 0) {
-            $item->checkAndDecreaseQuality();
+            $this->checkAndDecreaseQuality($item);
+        }
+    }
+
+    private function checkAndIncreaseQuality(Item $item): void
+    {
+        if ($item->getQuality() < 50) {
+            $item->increaseQuality();
+        }
+    }
+
+    private function checkAndDecreaseQuality(Item $item): void
+    {
+        if ($item->getQuality() > 0) {
+            $item->decreaseQuality();
         }
     }
 }

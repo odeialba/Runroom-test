@@ -71,20 +71,6 @@ class Item
         $this->quality = 0;
     }
 
-    public function checkAndIncreaseQuality(): void
-    {
-        if ($this->getQuality() < 50) {
-            $this->increaseQuality();
-        }
-    }
-
-    public function checkAndDecreaseQuality(): void
-    {
-        if ($this->getQuality() > 0) {
-            $this->decreaseQuality();
-        }
-    }
-
     public function __toString(): string
     {
         return "{$this->name}, {$this->sellIn}, {$this->quality}";
