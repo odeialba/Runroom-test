@@ -20,13 +20,13 @@ class GildedRose
     {
         foreach ($this->items as $item) {
             switch ($item->getName()) {
+                case self::NAME_SULFURAS:
+                    break;
                 case self::NAME_BRIE:
                     $this->updateBrie($item);
                     break;
                 case self::NAME_BACKSTAGE:
                     $this->updateBackstage($item);
-                    break;
-                case self::NAME_SULFURAS:
                     break;
                 default:
                     $this->updateCommon($item);
@@ -38,9 +38,8 @@ class GildedRose
     private function updateBrie(Item $item): void
     {
         $this->checkAndIncreaseQuality($item);
-        $item->decreaseSellIn();
 
-        if ($item->getSellIn() < 0) {
+        if ($this->decreaseAndCheckSellIn($item)) {
             $this->checkAndIncreaseQuality($item);
         }
     }
@@ -50,18 +49,10 @@ class GildedRose
         $this->checkAndIncreaseQuality($item);
 
         if ($item->getQuality() < 50) {
-            if ($item->getSellIn() < 11) {
-                $item->increaseQuality();
-            }
-
-            if ($item->getSellIn() < 6) {
-                $item->increaseQuality();
-            }
+            $this->increaseQualityBySellIn($item);
         }
 
-        $item->decreaseSellIn();
-
-        if ($item->getSellIn() < 0) {
+        if ($this->decreaseAndCheckSellIn($item)) {
             $item->resetQuality();
         }
     }
@@ -69,9 +60,8 @@ class GildedRose
     private function updateCommon(Item $item): void
     {
         $this->checkAndDecreaseQuality($item);
-        $item->decreaseSellIn();
 
-        if ($item->getSellIn() < 0) {
+        if ($this->decreaseAndCheckSellIn($item)) {
             $this->checkAndDecreaseQuality($item);
         }
     }
@@ -88,5 +78,23 @@ class GildedRose
         if ($item->getQuality() > 0) {
             $item->decreaseQuality();
         }
+    }
+
+    private function increaseQualityBySellIn(Item $item): void
+    {
+        if ($item->getSellIn() < 11) {
+            $item->increaseQuality();
+        }
+
+        if ($item->getSellIn() < 6) {
+            $item->increaseQuality();
+        }
+    }
+
+    private function decreaseAndCheckSellIn(Item $item): bool
+    {
+        $item->decreaseSellIn();
+
+        return $item->getSellIn() < 0;
     }
 }
