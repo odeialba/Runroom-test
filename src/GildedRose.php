@@ -18,47 +18,74 @@ class GildedRose
     public function updateQuality(): void
     {
         foreach ($this->items as $item) {
-            if (! in_array($item->name, [self::NAME_BRIE, self::NAME_BACKSTAGE], true)) {
-                if ($item->quality > 0 && $item->name !== self::NAME_SULFURAS) {
-                    $item->quality--;
-                }
-            } elseif ($item->quality < 50) {
-                $item->quality++;
-                if ($item->name === self::NAME_BACKSTAGE && $item->quality < 50) {
-                    if ($item->sell_in < 11) {
-                        $item->quality++;
-                    }
-                    if ($item->sell_in < 6) {
-                        $item->quality++;
-                    }
-                }
+            switch ($item->name) {
+                case self::NAME_BRIE:
+                    $this->updateBrie($item);
+                    break;
+                case self::NAME_BACKSTAGE:
+                    $this->updateBackstage($item);
+                    break;
+                case self::NAME_SULFURAS:
+                    $this->updateSulfuras($item);
+                    break;
+                default:
+                    $this->updateCommon($item);
+                    break;
             }
+        }
+    }
 
-            if ($item->name !== self::NAME_SULFURAS) {
-                $item->sell_in--;
-            }
+    private function updateBrie(Item $item): void
+    {
+        if ($item->quality < 50) {
+            $item->quality++;
+        }
 
-            if ($item->sell_in >= 0) {
-                continue;
-            }
+        if (--$item->sell_in >= 0) {
+            return;
+        }
 
-            if ($item->name === self::NAME_BACKSTAGE) {
-                $item->quality = 0;
-                continue;
-            }
+        if ($item->quality < 50) {
+            $item->quality++;
+        }
+    }
 
-            if ($item->name === self::NAME_BRIE) {
-                if ($item->quality < 50) {
+    private function updateBackstage(Item $item): void
+    {
+        if ($item->quality < 50) {
+            if (++$item->quality < 50) {
+                if ($item->sell_in < 11) {
                     $item->quality++;
                 }
-
-                continue;
+                if ($item->sell_in < 6) {
+                    $item->quality++;
+                }
             }
+        }
 
-            if ($item->quality > 0 && $item->name !== self::NAME_SULFURAS) {
-                $item->quality--;
-                continue;
-            }
+        if (--$item->sell_in >= 0) {
+            return;
+        }
+
+        $item->quality = 0;
+    }
+
+    private function updateSulfuras(Item $item): void
+    {
+    }
+
+    private function updateCommon(Item $item): void
+    {
+        if ($item->quality > 0) {
+            $item->quality--;
+        }
+
+        if (--$item->sell_in >= 0) {
+            return;
+        }
+
+        if ($item->quality > 0) {
+            $item->quality--;
         }
     }
 }
